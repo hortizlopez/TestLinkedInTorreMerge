@@ -26,15 +26,55 @@ namespace BunnyMerge.Controllers
 				var request = new RestRequest(Method.POST);
 				request.AddParameter("grant_type", "authorization_code");
 				request.AddParameter("code", code);
-				request.AddParameter("redirect_uri", "http://localhost:61234/Linkedin/Auth");
-				request.AddParameter("client_id", "783kpt24kkvmuf");
-				request.AddParameter("client_secret", "nZDGbWMgsT5IYz8W");
+				request.AddParameter("redirect_uri", System.Configuration.ConfigurationManager.AppSettings["LIAuthRedirectUri"].ToString());
+				request.AddParameter("client_id", System.Configuration.ConfigurationManager.AppSettings["LIAuthApiClientId"]);
+				request.AddParameter("client_secret", System.Configuration.ConfigurationManager.AppSettings["LIAuthClientSecret"]);
 				IRestResponse response = client.Execute(request);
 
 				JsonDeserializer deserializer = new JsonDeserializer();
 				var content = deserializer.Deserialize<BunnyMerge.Helpers.AccessTokenHelper>(response);
 
-				string querystring = string.Format(@"~:({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21})?oauth2_access_token={22}&format=json",
+				var tuple = connectLinkedin(content.access_token);
+				var profile = tuple.Item1;
+				response = tuple.Item2;
+
+				var torreBioChecked = false;
+				if (response.StatusCode == System.Net.HttpStatusCode.OK)
+				{
+					Session["LIUserName"] = profile.firstName;
+					Session["LIUserId"] = profile.id;
+					Session["access_token"] = content.access_token;
+					torreBioChecked = true;
+				}
+
+				var linkedInChecked = false;
+				var torreModel = new Models.TorreProfile();
+
+				if (Session["UserId"] != null && Session["UserId"] != string.Empty)
+				{
+					var torreController = new TorreBioController();
+					var userId = Session["UserId"].ToString();
+					var userName = Session["UserName"].ToString();
+
+					torreModel = torreController.connectTorre(userName).Item1;
+					linkedInChecked = true;
+				}
+
+				if (torreBioChecked && linkedInChecked)
+					return RedirectToAction("Index", "Home", new Tuple<Models.TorreProfile, Models.BasicProfile>(torreModel, profile));
+				else
+					return RedirectToAction("Index", "Home");
+
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public Tuple<Models.BasicProfile, IRestResponse> connectLinkedin(string access_token)
+		{
+			string querystring = string.Format(@"~:({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21})?oauth2_access_token={22}&format=json",
 					"id",
 					"first-name",
 					"last-name",
@@ -57,25 +97,18 @@ namespace BunnyMerge.Controllers
 					"site-standard-profile-request",
 					"api-standard-profile-request",
 					"public-profile-url",
-					content.access_token);
+					access_token);
 
-				string url = string.Format(@"https://api.linkedin.com/v1/people/{0}", querystring);
+			string url = string.Format(@"https://api.linkedin.com/v1/people/{0}", querystring);
 
-				client = new RestClient(url);
-				request = new RestRequest(Method.GET);
-				response = client.Execute(request);
+			var client = new RestClient(url);
+			var request = new RestRequest(Method.GET);
+			var response = client.Execute(request);
 
-				var profile = deserializer.Deserialize<Models.BasicProfile>(response);
+			JsonDeserializer deserializer = new JsonDeserializer();
+			var profile = deserializer.Deserialize<Models.BasicProfile>(response);
 
-				//client = new RestClient("https://api.linkedin.com/v1/people/")
-
-				//content = response.Content;
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-			return View();
+			return new Tuple<Models.BasicProfile, IRestResponse>(profile,response);
 		}
 	}
 }
