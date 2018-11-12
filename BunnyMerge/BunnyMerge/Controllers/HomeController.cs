@@ -10,6 +10,11 @@ namespace BunnyMerge.Controllers
 	{
 		public ActionResult Index()
 		{
+			if (Session["MergeLITorre"] != null)
+			{
+				var merge = (Models.MergeLITorre)Session["MergeLITorre"];
+				return View(merge);
+			}
 			return View();
 		}
 

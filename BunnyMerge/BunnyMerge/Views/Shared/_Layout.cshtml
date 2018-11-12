@@ -24,7 +24,10 @@
 				<ul class="nav navbar-nav">
 					@if (HttpContext.Current.Session["UserId"] != null && HttpContext.Current.Session["UserId"] != "")
 					{
-						<li><p><b>@Session["UserName"]</b></p></li>
+						<li><a>@Session["UserName"]</a></li>
+						<li><a href="#BasicProfile">Profile</a></li>
+						<li><a href="#Strengths">Strengths</a></li>
+						<li><a href="#Aspirations">Aspirations</a></li>
 					}
 					else
 					{

@@ -1,14 +1,103 @@
-﻿@{
+﻿@model BunnyMerge.Models.MergeLITorre
+@{
 	ViewBag.Title = "Home Page";
 
+	var LIAuthApiClientId = @System.Configuration.ConfigurationManager.AppSettings["LIAuthApiClientId"];
+	var LIAuthRedirectUri = @System.Configuration.ConfigurationManager.AppSettings["LIAuthRedirectUri"];
+	var LIAuthState = @System.Configuration.ConfigurationManager.AppSettings["LIAuthState"];
+	var LIAuthScope = @System.Configuration.ConfigurationManager.AppSettings["LIAuthScope"];
+	var LIAuthUrl = @System.Configuration.ConfigurationManager.AppSettings["LIAuthUrl"];
+
+	var AuthUrl = string.Format(LIAuthUrl, LIAuthApiClientId, LIAuthRedirectUri, LIAuthState, LIAuthScope);
 }
 
-@if (HttpContext.Current.Session["UserId"] != null && HttpContext.Current.Session["UserId"] != "")
+@if (HttpContext.Current.Session["UserId"] != null && HttpContext.Current.Session["UserId"] != string.Empty)
 {
+	if (HttpContext.Current.Session["LIUserId"] != null && HttpContext.Current.Session["LIUserId"] != string.Empty)
+	{
+		<section id="BasicProfile">
+			<div id="profileImg">
+				<img src="@Model.LIProfile.pictureUrl" alt="LinkedIn Image" />
+			</div>
+			<div id="Summary" style="text-align:center;">
+				<p>@Model.LIProfile.summary</p>
+			</div>
+			<div id="latestPosition">
+				<h3>Latest Position</h3>
+				<div>
+					<span style="font-weight: 900">Title:</span>
+					<span>@Model.LIProfile.positions.values[0].title</span>
+				</div>
+				<div>
+					<span style="font-weight: 900">Summary:</span>
+					<span>@Model.LIProfile.positions.values[0].summary</span>
+				</div>
+				<div>
+					<span style="font-weight: 900">Start Date:</span>
+					<span>@Model.LIProfile.positions.values[0].startDate</span>
+				</div>
+				<div>
+					<span style="font-weight: 900">End date:</span>
+					<span>
+						@if (Model.LIProfile.positions.values[0].endDate != null)
+						{
+							@Html.DisplayFor(modelItem => string.Concat(Model.LIProfile.positions.values[0].endDate.year.ToString(), "/", Model.LIProfile.positions.values[0].endDate.month.ToString()))
+						}
+						else
+						{
+							<text>Present</text>
+						}
+					</span>
+				</div>
+			</div>
+		</section>
+		<section id="Strengths">
+			<h2>
+				Strengths
+			</h2>
+			@foreach (var strengh in Model.TorreProfile.strengths)
+			{
+				<div>
+					<span style="font-weight: 900">Strength name:</span>
+					<span>@strengh.name</span>
+				</div>
+			}
+			<div>
 
-	<section id="BasicProfile">
+			</div>
+		</section>
+		<section id="Aspirations">
+			<h2>
+				Aspirations
+			</h2>
+			@foreach (var aspiration in Model.TorreProfile.aspirations)
+			{
+				<div>
+					<span style="font-weight: 900">Name:</span>
+					<span>@aspiration.name</span>
+				</div>
+				<div style="padding-bottom: 10px;">
+					<span style="font-weight: 900">Additional Info:</span>
+					<span>@aspiration.additionalInfo</span>
+				</div>
+			}
+			<div>
 
-	</section>
+			</div>
+		</section>
+	}
+	else
+	{
+		<div style="text-align: center">
+			<div class="container ini-container ini-sub-container" style="width: 100%; padding-bottom: 15px;">
+				To continue with the merging process, please connect to your LinkedIn account.
+			</div>
+			<div>
+				<a href="@AuthUrl"
+				   class="btn btn-primary">Login with LinkedIn</a>
+			</div>
+		</div>
+	}
 }
 else
 {

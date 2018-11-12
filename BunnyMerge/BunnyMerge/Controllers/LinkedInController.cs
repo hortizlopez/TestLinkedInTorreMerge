@@ -38,16 +38,16 @@ namespace BunnyMerge.Controllers
 				var profile = tuple.Item1;
 				response = tuple.Item2;
 
-				var torreBioChecked = false;
+				var linkedInChecked = false;
 				if (response.StatusCode == System.Net.HttpStatusCode.OK)
 				{
 					Session["LIUserName"] = profile.firstName;
 					Session["LIUserId"] = profile.id;
 					Session["access_token"] = content.access_token;
-					torreBioChecked = true;
+					linkedInChecked = true;
 				}
 
-				var linkedInChecked = false;
+				var torreBioChecked = false;
 				var torreModel = new Models.TorreProfile();
 
 				if (Session["UserId"] != null && Session["UserId"] != string.Empty)
@@ -57,13 +57,12 @@ namespace BunnyMerge.Controllers
 					var userName = Session["UserName"].ToString();
 
 					torreModel = torreController.connectTorre(userName).Item1;
-					linkedInChecked = true;
+					torreBioChecked = true;
 				}
-
 				if (torreBioChecked && linkedInChecked)
-					return RedirectToAction("Index", "Home", new Tuple<Models.TorreProfile, Models.BasicProfile>(torreModel, profile));
-				else
-					return RedirectToAction("Index", "Home");
+					Session["MergeLITorre"] = new Models.MergeLITorre() { LIProfile = profile, TorreProfile = torreModel };
+
+				return RedirectToAction("Index", "Home");
 
 			}
 			catch (Exception ex)
@@ -108,7 +107,7 @@ namespace BunnyMerge.Controllers
 			JsonDeserializer deserializer = new JsonDeserializer();
 			var profile = deserializer.Deserialize<Models.BasicProfile>(response);
 
-			return new Tuple<Models.BasicProfile, IRestResponse>(profile,response);
+			return new Tuple<Models.BasicProfile, IRestResponse>(profile, response);
 		}
 	}
 }

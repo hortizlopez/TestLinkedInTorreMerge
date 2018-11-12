@@ -163,6 +163,7 @@
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\MergeLITorre.cs" />
     <Compile Include="Models\Position.cs" />
     <Compile Include="Models\TorreAchievement.cs" />
     <Compile Include="Models\TorreAspiration.cs" />
@@ -256,7 +257,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52221</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:52221/</IISUrl>
+          <IISUrl>http://localhost:50428/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -8,20 +8,20 @@ using System.Web.Mvc;
 
 namespace BunnyMerge.Controllers
 {
-    public class TorreBioController : Controller
-    {
-        // GET: TorreBio
-        public ActionResult Index()
-        {
-            return View();
-        }
+	public class TorreBioController : Controller
+	{
+		// GET: TorreBio
+		public ActionResult Index()
+		{
+			return View();
+		}
 
 		public ActionResult SignIn()
 		{
 			return View();
 		}
 
-		public ActionResult SignInT (string username)
+		public ActionResult SignInT(string username)
 		{
 			var tuple = connectTorre(username);
 			var content = tuple.Item1;
@@ -49,12 +49,12 @@ namespace BunnyMerge.Controllers
 			}
 
 			if (torreBioChecked && linkedInChecked)
-				return RedirectToAction("Index", "Home", new Tuple<Models.TorreProfile, Models.BasicProfile>(content, linkedInModel));
-			else
-				return RedirectToAction("Index", "Home");
+				Session["MergeLITorre"] = new Models.MergeLITorre() { LIProfile = linkedInModel, TorreProfile = content };
+
+			return RedirectToAction("Index", "Home");
 		}
 
-		public Tuple<Models.TorreProfile, IRestResponse> connectTorre (string username)
+		public Tuple<Models.TorreProfile, IRestResponse> connectTorre(string username)
 		{
 			var client = new RestClient(string.Format("https://torre.bio/api/bios/{0}", username));
 			var request = new RestRequest(Method.GET);
@@ -62,8 +62,8 @@ namespace BunnyMerge.Controllers
 
 			JsonDeserializer deserializer = new JsonDeserializer();
 			var content = deserializer.Deserialize<Models.TorreProfile>(response);
-			
+
 			return new Tuple<Models.TorreProfile, IRestResponse>(content, response);
 		}
-    }
+	}
 }
