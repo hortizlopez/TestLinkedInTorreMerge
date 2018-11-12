@@ -1,0 +1,107 @@
+﻿body {
+	padding-top: 50px;
+	padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+	white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+	max-width: 280px;
+}
+
+h1 {
+	margin: 0 auto;
+}
+
+
+
+/* Torre Layout*/
+.navbar {
+	background-color: rgb(245, 245, 245);
+	color: rgba(0, 0, 0, 0.9);
+	font-family: Muli, Helvetica, Arial, sans-serif;
+}
+
+.ini-container {
+	color: rgba(0, 0, 0, 0.38);
+	font-family: Muli,Helvetica,Arial,sans-serif;
+	font-size: 48px;
+	font-weight: 900;
+	display: flex;
+	width: 600px;
+	padding-top: 110px;
+	float: left;
+	width: 45%;
+}
+
+.form-ini-content .container {
+	font-size: 18px;
+}
+
+.ini-sub-container {
+	color: rgba(0, 0, 0, 0.26);
+	font-family: Muli,Helvetica,Arial,sans-serif;
+	font-size: 38px;
+	font-weight: 600;
+	display: flex;
+	width: 45%;
+	padding-top: 100px;
+	float: right;
+	position: relative;
+}
+
+.navbar-fixed-bottom {
+	background-color: white;
+}
+
+/*!
+ * Start Bootstrap - Scrolling Nav (https://startbootstrap.com/template-overviews/scrolling-nav)
+ * Copyright 2013-2017 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-scrolling-nav/blob/master/LICENSE)
+ */
+
+@media (min-width: 992px) {
+	@media (min-width: 992px) {
+		header {
+			padding: 156px 0 100px;
+		}
+	}
+
+section {
+padding: 150px 0;
+}
+
+.nav li a {
+color: #9d9d9d !important;
+}
+
+.nav li a:hover {
+	color: #23527c;
+}
+
+	.nav li p {
+		font-size: 14px;
+		font-family: Muli,Helvetica,Arial,sans-serif;
+		float: left;
+		display: block;
+		color: rgba(0, 0, 0, 0.9);
+		position: relative;
+	}
+
+.nav li a:focus {
+	color: black !important;
+}

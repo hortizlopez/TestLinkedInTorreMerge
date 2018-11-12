@@ -1,0 +1,17 @@
+﻿
+@{
+	ViewBag.Title = "Index";
+	var LIAuthApiClientId = @System.Configuration.ConfigurationManager.AppSettings["LIAuthApiClientId"];
+	var LIAuthRedirectUri = @System.Configuration.ConfigurationManager.AppSettings["LIAuthRedirectUri"];
+	var LIAuthState = @System.Configuration.ConfigurationManager.AppSettings["LIAuthState"];
+	var LIAuthScope = @System.Configuration.ConfigurationManager.AppSettings["LIAuthScope"];
+	var LIAuthUrl = @System.Configuration.ConfigurationManager.AppSettings["LIAuthUrl"];
+
+	var AuthUrl = string.Format(LIAuthUrl, LIAuthApiClientId, LIAuthRedirectUri, LIAuthState, LIAuthScope);
+}
+
+<h2>Index</h2>
+<div>
+	<a href="@AuthUrl"
+	   class="btn btn-primary">Login with LinkedIn</a>
+</div>

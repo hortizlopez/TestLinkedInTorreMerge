@@ -1,0 +1,22 @@
+﻿	@{
+		Layout = "~/Views/Shared/_Layout.cshtml";
+	}
+
+	<div class="form-ini-content" style="margin: 0 auto; width: 50%; font-family: Muli; padding-top: 25px;">
+		<p class="container" style="margin">
+			Sign in to Torre by providing your username.
+		</p>
+		<div class="container" style="margin: 0 auto;">
+			@using (Html.BeginForm("SignInT", "TorreBio", FormMethod.Post))
+			{
+				<div>
+					<input type="text" id="username" style="width: 500px;" name="username" />
+				</div>
+				<div style="padding-top: 10px;  font-size: 14px;">
+					<input type="submit" value="Sign In" class="navbar-brand" style="border:0;" />
+				</div>
+			
+			}
+
+		</div>
+	</div>

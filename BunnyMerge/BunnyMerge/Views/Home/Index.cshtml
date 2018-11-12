@@ -1,0 +1,22 @@
+﻿@{
+	ViewBag.Title = "Home Page";
+
+}
+
+@if (HttpContext.Current.Session["UserId"] != null && HttpContext.Current.Session["UserId"] != "")
+{
+
+	<section id="BasicProfile">
+
+	</section>
+}
+else
+{
+	<div class="container ini-container">
+		Professional reputations that cut through the crap and everyone can trust
+	</div>
+
+	<div class="container ini-container ini-sub-container">
+		Collate and use your recommendations and experiences in a simple, elegant way.
+	</div>
+}
